@@ -57,8 +57,6 @@ class ViewController: UIViewController {
 
 
 }
-
-
 extension ViewController:UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         matchInfo.data.count
@@ -68,9 +66,16 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource{
         guard let cell=tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? MatchCardTableViewCell else {fatalError("")}
         
         let matchInfo=matchInfo.data[indexPath.row]
-        if let matchTime=matchInfo.dateTimeGMT?.dateFormmater(){
-        cell.config(time: matchTime, type: matchInfo.matchType ?? "")
-        }
+        cell.config(matchInfo)
+        
         return cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = matchInfo.data[indexPath.row]
+        navigationController?.pushViewController(MatchDetailViewController(cell: cell), animated: true)
+        
+    }
 }
+
